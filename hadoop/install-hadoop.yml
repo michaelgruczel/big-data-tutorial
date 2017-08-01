@@ -1,0 +1,16 @@
+---
+# The main playbook to deploy the site
+
+- hosts: hadoop_all
+  roles:
+   - common
+   - java
+
+- hosts: hadoop_master_primary
+  roles:
+  - { role: hadoop_primary }
+
+- hosts: hadoop_slaves
+  roles:
+  - { role: hadoop_slaves }
+

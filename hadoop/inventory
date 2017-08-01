@@ -1,0 +1,11 @@
+[hadoop_all:children]
+hadoop_masters
+hadoop_slaves
+
+[hadoop_masters]
+hadoopmaster ansible_ssh_host=10.0.0.71
+
+
+[hadoop_slaves]
+hadoopslave1 ansible_ssh_host=10.0.0.72
+hadoopslave2 ansible_ssh_host=10.0.0.73

@@ -1,0 +1,21 @@
+---
+# Handlers for the hadoop master services
+
+- name: restart hadoop master services
+  service: name={{item}} state=restarted
+  with_items:
+    - hadoop-0.20-jobtracker
+  when: not install_hdfs
+
+- name: restart hadoop master services
+  service: name={{item}} state=restarted
+  with_items: 
+    - hadoop-0.20-jobtracker
+    - hadoop-0.20-namenode
+  when: install_hdfs
+
+- name: restart hadoopha master services
+  service: name={{item}} state=restarted
+  with_items: 
+    - hadoop-0.20-jobtracker
+    - hadoop-0.20-namenode

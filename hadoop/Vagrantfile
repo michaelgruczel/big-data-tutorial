@@ -1,0 +1,60 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+#https://github.com/boosh/ansible-vagrant-hadoop-cluster
+
+# Define the cluster
+nodes = [
+  { :hostname => 'deploymenthost', :ip => '10.0.0.70', :mem => '512', :cpus => '1', :deploymenthost => true},
+  { :hostname => 'hadoopmaster', :ip => '10.0.0.71', :mem => '4096', :cpus => '1', :deploymenthost => false },
+  { :hostname => 'hadoopslave1', :ip => '10.0.0.72', :mem => '4096', :cpus => '1', :deploymenthost => false },
+  { :hostname => 'hadoopslave1', :ip => '10.0.0.73', :mem => '4096', :cpus => '1', :deploymenthost => false }
+]
+
+Vagrant.configure("2") do |config|
+  # install vagrant-hostmanager upfront with vagrant plugin install vagrant-hostmanager
+  config.hostmanager.enabled = false
+  config.hostmanager.manage_host = true
+  config.hostmanager.include_offline = true
+  config.hostmanager.ignore_private_ip = false
+
+  if Vagrant.has_plugin?("vagrant-cachier")
+    config.cache.scope = :box
+  end
+
+  nodes.each do |node|
+    config.vm.define node[:hostname] do |node_config|
+
+      node_config.vm.box = "hashicorp/xenial64"
+      node_config.vm.hostname = node[:hostname]
+      node_config.vm.network :private_network, ip: node[:ip]
+      # be sure to have installed vagrant plugin install vagrant-vbguest
+      # node_config.vm.synced_folder ".", "/vagrant", type: "virtualbox"
+
+      node_config.vm.provider :virtualbox do |vb|
+        vb.customize ["modifyvm", :id, "--memory", node[:mem], "--cpus", node[:cpus]]
+      end
+
+      #node_config.vm.provision "shell", inline: "sudo timedatectl set-timezone Europe/Berlin"
+      node_config.vm.provision "shell", inline: "sudo yum update -y *"  
+      node_config.vm.provision "shell", inline: "sudo yum install -y openjdk-8-jdk"  
+
+      if node[:deploymenthost]
+        #node_config.vm.provision "shell", inline: "sudo yum install -y net-tools epel-release"
+        #node_config.vm.provision "shell", inline: "sudo yum install -y ansible"
+        node_config.vm.provision :ansible_local do |ansible|
+          ansible.inventory_path = "inventory"
+          ansible.sudo = true
+          ansible.playbook = "install-hadoop.yml"
+          ansible.verbose = "vv"
+        end
+      else
+        # non jumphost provisionings which are basic and not provisioned via ansible
+      end
+
+      node_config.vm.provision :hostmanager
+
+    end # define node[:hostname] do |node_config|
+  end # nodes.each do |node|
+
+end # Vagrant.configure
