@@ -52,6 +52,9 @@ A map reduce job is splitted into map tasks and reduce tasks. The tasks are sche
 With a smart distribution of tasks and data, the calculation of massive data can be highly parallized.  
 
 ![1](https://github.com/michaelgruczel/big-data-tutorial/raw/master/hadoop/mapreduce-1.png "distribution")
+
+the tools are stacking up in the hadoop world.
+
 ![2](https://github.com/michaelgruczel/big-data-tutorial/raw/master/hadoop/hadoop-basic.png "hadoop basic")
 
 ## understand the infrastructure concepts behind hadoop
