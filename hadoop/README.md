@@ -51,11 +51,8 @@ In order to make this possible new data can be appended to the end of files, bur
 A map reduce job is splitted into map tasks and reduce tasks. The tasks are scheduled by YARN to the different nodes. The data is splitted to the different nodes as well, thanks to HDFS.
 With a smart distribution of tasks and data, the calculation of massive data can be highly parallized.  
 
-
-TODO image distribute
-
-TODO  Image of hadoop, hdfs, YARN
-
+![1](https://github.com/michaelgruczel/big-data-tutorial/raw/master/hadoop/mapreduce-1.png "distribution")
+![2](https://github.com/adam-p/markdown-here/raw/master/src/common/images/hadoop-basic.png "hadoop basic")
 
 ## understand the infrastructure concepts behind hadoop
 
@@ -67,7 +64,7 @@ The master can run in HA mode, means a primary and a secodary, the failover is n
 In this repositiy you will find a a vagrant description, creating a small hadoop cluster.
 The setup looks like this:
 
-TODO
+![3](https://github.com/adam-p/markdown-here/raw/master/src/common/images/hadoop-vagrant.png "vagrant setup")
 
 ## let's play with hadoop
 
