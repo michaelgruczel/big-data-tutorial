@@ -93,48 +93,5 @@ now let's play with the installation:
     hadoop fs -copyToLocal hdfs://localhost/testfolder/testinputfileinhdfs.txt testinputfileisback.txt 
     
 Hadoop is written in Java and offers an API which can be used for implementing own programs in several languages.
-Let us run sonme java programs.
 
-In this folder is a gradle project you can use to build several java programs.
-You can open it with your favorite editor to change code.
-You have to change the main class in the build.gradle file to the one you want to test in hadoop.
-Then you can build the jar (containing all the code from the project, but using your main class as default).
-So lets start with a simple example. You will find a reader class in the project:
-
-
-##################################################################################
-
-not yet tested:
-
-<PRE>
-
-public class TestReader {
-  public static void main(String[] args) throws Exception {
-    FileSystem fs = FileSystem.get(URI.create(args[0]), new Configuration());
-    InputStream in = null;
-    try {
-      in = fs.open(new Path(args[0]));
-      IOUtils.copyBytes(in, System.out, 4096, false);
-    } finaly {
-      IOUtiles.closeStream(in);
-    }
-  } 
-}
-
-</PRE>   
-
-This progran just reads from the hadoop filesystem. 
-Let's build and run it.
-
-    # shell 1
-    gradlew build
-
-and run it
-
-    TODO    
-    java -jar sharedfoder/.../xxx.jar hdfs://localhost/testfolder/testinputfileinhdfs.txt
-
-This program reads data form hadoop, but it was not a hadoop program, So let us write a simple map reduce program:
-
-TODO
-
+more coming soon...
