@@ -1,6 +1,16 @@
 ---
-- include: oracle.yml
-  when: java_versions is defined and java_versions is sequence and java_versions|join|search("oracle")
+- include: webupd8.yml
 
-- include: openjdk.yml
-  when: java_versions is defined and java_versions is sequence and java_versions|join|search("openjdk")
+- name: Update repositories cache
+  apt:
+    update_cache: yes
+
+- name: Install the jdk
+  apt:
+    name: oracle-java8-installer
+    state: present
+
+- name: set jdk as default
+  apt:
+    name: oracle-java8-set-default
+    state: present

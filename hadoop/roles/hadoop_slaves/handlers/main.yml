@@ -1,8 +1,12 @@
 ---
 # Handlers for the hadoop slave services
 
-- name: restart hadoop slave services
-  service: name=${item} state=restarted
-  with_items: 
-    - hadoop-0.20-tasktracker
-    - hadoop-0.20-datanode
+- name: restart tasktracker
+  service:
+    name: hadoop-0.20-tasktracker
+    state: restarted
+
+- name: restart datanode
+  service:
+    name: hadoop-0.20-datanode
+    state: restarted    

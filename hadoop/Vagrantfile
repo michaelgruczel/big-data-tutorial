@@ -5,10 +5,10 @@
 
 # Define the cluster
 nodes = [
-  { :hostname => 'deploymenthost', :ip => '10.0.0.70', :mem => '512', :cpus => '1', :deploymenthost => true},
   { :hostname => 'hadoopmaster', :ip => '10.0.0.71', :mem => '4096', :cpus => '1', :deploymenthost => false },
   { :hostname => 'hadoopslave1', :ip => '10.0.0.72', :mem => '4096', :cpus => '1', :deploymenthost => false },
-  { :hostname => 'hadoopslave1', :ip => '10.0.0.73', :mem => '4096', :cpus => '1', :deploymenthost => false }
+  { :hostname => 'hadoopslave1', :ip => '10.0.0.73', :mem => '4096', :cpus => '1', :deploymenthost => false },
+  { :hostname => 'deploymenthost', :ip => '10.0.0.70', :mem => '4096', :cpus => '1', :deploymenthost => true }
 ]
 
 Vagrant.configure("2") do |config|
@@ -25,7 +25,13 @@ Vagrant.configure("2") do |config|
   nodes.each do |node|
     config.vm.define node[:hostname] do |node_config|
 
-      node_config.vm.box = "hashicorp/xenial64"
+      #node_config.vm.box = "ubuntu/xenial64"
+      #node_config.vm.box = "envimation/ubuntu-xenial"
+      #config.vm.box_url = "https://atlas.hashicorp.com/envimation/boxes/ubuntu-xenial"
+
+      node_config.vm.box = "hashicorp/precise64"
+      #config.vm.box_url = "http://files.vagrantup.com/precise64.box"
+
       node_config.vm.hostname = node[:hostname]
       node_config.vm.network :private_network, ip: node[:ip]
       # be sure to have installed vagrant plugin install vagrant-vbguest
@@ -36,14 +42,13 @@ Vagrant.configure("2") do |config|
       end
 
       #node_config.vm.provision "shell", inline: "sudo timedatectl set-timezone Europe/Berlin"
-      node_config.vm.provision "shell", inline: "sudo yum update -y *"  
-      node_config.vm.provision "shell", inline: "sudo yum install -y openjdk-8-jdk"  
+      #node_config.vm.provision "shell", inline: "sudo apt-get update -y *"  
+      #node_config.vm.provision "shell", inline: "sudo yum install -y openjdk-8-jdk"  
 
       if node[:deploymenthost]
-        #node_config.vm.provision "shell", inline: "sudo yum install -y net-tools epel-release"
-        #node_config.vm.provision "shell", inline: "sudo yum install -y ansible"
         node_config.vm.provision :ansible_local do |ansible|
           ansible.inventory_path = "inventory"
+          ansible.limit = "all"
           ansible.sudo = true
           ansible.playbook = "install-hadoop.yml"
           ansible.verbose = "vv"

@@ -1,12 +1,22 @@
 ---
 # The main playbook to deploy the site
 
-- hosts: hadoop_all
+- hosts: hadoopmaster
   roles:
    - common
    - java
 
-- hosts: hadoop_master_primary
+- hosts: hadoopslave1
+  roles:
+   - common
+   - java
+
+- hosts: hadoopslave2
+  roles:
+   - common
+   - java
+
+- hosts: hadoop_masters
   roles:
   - { role: hadoop_primary }
 

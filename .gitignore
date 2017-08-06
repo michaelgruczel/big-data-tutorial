@@ -1,0 +1,14 @@
+.vagrant/
+logs/
+*.log
+*.bak
+*.backup
+*.retry
+
+*/ssh/
+
+.DS_Store
+.gradle/
+.classpath
+.project
+
